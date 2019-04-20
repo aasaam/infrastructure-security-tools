@@ -1,0 +1,15 @@
+sudo: true
+
+language: python
+
+python:
+  - "2.7"
+
+before_script:
+  - sudo apt-get install -y openssh-client openssl gnupg2 faketime python coreutils
+
+script:
+  - ./gen-ca.sh
+  - ./gen-servers.sh
+  - ./gen-user-developer.sh 'Maryam Haghgou' 'mary' 'mary@mary.tld'
+  - ./gen-user-sysadmin.sh 'Maryam Haghgou' 'mary' 'mary@mary.tld'

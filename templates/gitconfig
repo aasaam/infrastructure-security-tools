@@ -1,0 +1,12 @@
+[user]
+	name = $CLIENT_NAME
+  email = $CLIENT_EMAIL
+  signingKey = $PGP_KEY_ID
+[core]
+  editor = nano
+[color]
+  ui = auto
+[gpg]
+	program = gpg2
+[commit]
+	gpgsign = true
