@@ -1,6 +1,7 @@
 # Infrastructure Security Tools
 
-[![Build Status](https://travis-ci.com/AASAAM/infrastructure-security-tools.svg?branch=master)](https://travis-ci.com/AASAAM/infrastructure-security-tools)
+![Travis (.com)](https://img.shields.io/travis/com/AASAAM/infrastructure-security-tools.svg?style=for-the-badge)
+![GitHub](https://img.shields.io/github/license/AASAAM/infrastructure-security-tools.svg?style=for-the-badge)
 
 Lets add some security workflow.
 
