@@ -68,10 +68,16 @@ do
       -out $SERVER_DIR/private/server_internal_$POST_INDEX.key.pem $KEY_SIZE
     chmod 400 $SERVER_DIR/private/server_internal_$POST_INDEX.key.pem
 
+    openssl genrsa \
+      -out $SERVER_DIR/private/client_internal_$POST_INDEX.key.pem $KEY_SIZE
+    chmod 400 $SERVER_DIR/private/client_internal_$POST_INDEX.key.pem
+
     SERVER_EXTENSION_INDEX="$SERVER_EXTENSION.$POST_INDEX"
     SERVER_INTERNAL_EXTENSION_INDEX="$SERVER_INTERNAL_EXTENSION.$POST_INDEX"
+    CLIENT_INTERNAL_EXTENSION_INDEX="$CLIENT_INTERNAL_EXTENSION.$POST_INDEX"
     render_template $PROJECT_PATH/templates/openssl.server.conf.ini > $SERVER_EXTENSION_INDEX
     render_template $PROJECT_PATH/templates/openssl.server.internal.conf.ini > $SERVER_INTERNAL_EXTENSION_INDEX
+    render_template $PROJECT_PATH/templates/openssl.client.internal.conf.ini > $CLIENT_INTERNAL_EXTENSION_INDEX
 
     openssl req -batch -config $SERVER_EXTENSION_INDEX \
       -key $SERVER_DIR/private/server_$POST_INDEX.key.pem \
@@ -80,6 +86,10 @@ do
     openssl req -batch -config $SERVER_INTERNAL_EXTENSION_INDEX \
       -key $SERVER_DIR/private/server_internal_$POST_INDEX.key.pem \
       -new -sha256 -out $SERVER_DIR/csr/server_internal_$POST_INDEX.csr.pem
+
+    openssl req -batch -config $CLIENT_INTERNAL_EXTENSION_INDEX \
+      -key $SERVER_DIR/private/client_internal_$POST_INDEX.key.pem \
+      -new -sha256 -out $SERVER_DIR/csr/client_internal_$POST_INDEX.csr.pem
 
     faketime -f "$DATE_YEAR-01-01 00:00:00" openssl ca -batch -passin pass:"$INT_PASSWORD" -config $SERVER_EXTENSION_INDEX \
       -extensions server_cert -days $SERVER_DAYS -notext -md sha256 \
@@ -93,6 +103,12 @@ do
       -out $SERVER_DIR/certs/server_internal_$POST_INDEX.cert.pem
     chmod 444 $SERVER_DIR/certs/server_internal_$POST_INDEX.cert.pem
 
+    faketime -f "$DATE_YEAR-01-01 00:00:00" openssl ca -batch -passin pass:"$ROOT_PASSWORD" -config $CLIENT_INTERNAL_EXTENSION_INDEX \
+      -extensions server_client_cert -days $SERVER_DAYS -notext -md sha256 \
+      -in $SERVER_DIR/csr/client_internal_$POST_INDEX.csr.pem \
+      -out $SERVER_DIR/certs/client_internal_$POST_INDEX.cert.pem
+    chmod 444 $SERVER_DIR/certs/client_internal_$POST_INDEX.cert.pem
+
     echo -e "${RED}Domain Server CA verify: ${SET}"
 
     openssl x509 -noout -text \
@@ -100,6 +116,9 @@ do
 
     openssl x509 -noout -text \
       -in $SERVER_DIR/certs/server_internal_$POST_INDEX.cert.pem
+
+    openssl x509 -noout -text \
+      -in $SERVER_DIR/certs/client_internal_$POST_INDEX.cert.pem
 
     echo -e "${RED}Domain Server CA verify via chain CA: ${SET}"
 

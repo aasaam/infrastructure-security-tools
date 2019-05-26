@@ -5,7 +5,7 @@ Hello dear $CLIENT_NAME ($CLIENT_USER).
 ## Install root ca
 
 \`\`\`bash
-sudo cp .$INFRASTRUCTURE_NS/.$INFRASTRUCTURE_NS-certificate.crt /usr/local/share/ca-certificates/aasaam.crt
+sudo cp .$INFRASTRUCTURE_NS/.$INFRASTRUCTURE_NS-certificate.crt /usr/local/share/ca-certificates/$INFRASTRUCTURE_NS.crt
 sudo update-ca-certificates
 \`\`\`
 

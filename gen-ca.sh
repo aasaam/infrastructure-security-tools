@@ -117,11 +117,11 @@ chmod 444 $ROOT_DIR/certs/ca.cert.crt
 openssl x509 -outform der -in $INTERMEDIATE_DIR/certs/intermediate.cert.pem -out $INTERMEDIATE_DIR/certs/intermediate.cert.crt
 chmod 444 $INTERMEDIATE_DIR/certs/intermediate.cert.crt
 
-cp $ROOT_DIR/certs/ca.cert.pem $PUBLIC_DIR/$INFRASTRUCTURE_NS-root-ca.pem
-cp $ROOT_DIR/certs/ca.cert.crt $PUBLIC_DIR/$INFRASTRUCTURE_NS-root-ca.crt
+cp $ROOT_DIR/certs/ca.cert.pem $PUBLIC_DIR/root-ca.pem
+cp $ROOT_DIR/certs/ca.cert.crt $PUBLIC_DIR/root-ca.crt
 
-cp $INTERMEDIATE_DIR/certs/intermediate.cert.pem $PUBLIC_DIR/$INFRASTRUCTURE_NS-intermediate-ca.pem
-cp $INTERMEDIATE_DIR/certs/intermediate.cert.crt $PUBLIC_DIR/$INFRASTRUCTURE_NS-intermediate-ca.crt
+cp $INTERMEDIATE_DIR/certs/intermediate.cert.pem $PUBLIC_DIR/intermediate-ca.pem
+cp $INTERMEDIATE_DIR/certs/intermediate.cert.crt $PUBLIC_DIR/intermediate-ca.crt
 chmod 444 $PUBLIC_DIR/*
 
 if [ "$CA_DEV" == "1" ]; then
